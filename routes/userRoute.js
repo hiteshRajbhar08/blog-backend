@@ -1,11 +1,12 @@
 const {
   getAllUsers,
   getUserProfile,
+  updateUserProfile,
 } = require('../controllers/userController');
 const validateObjectId = require('../middlewares/validateObjectId');
 const {
-  verifyToken,
   verifyTokenAndAdmin,
+  verifyTokenAndOnlyUser,
 } = require('../middlewares/verifyToken');
 
 const router = require('express').Router();
@@ -14,6 +15,9 @@ const router = require('express').Router();
 router.route('/profile').get(verifyTokenAndAdmin, getAllUsers);
 
 //  /api/users/profile/:id
-router.route('/profile/:id').get(validateObjectId, getUserProfile);
+router
+  .route('/profile/:id')
+  .get(validateObjectId, getUserProfile)
+  .put(validateObjectId, verifyTokenAndOnlyUser, updateUserProfile);
 
 module.exports = router;
