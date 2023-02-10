@@ -2,6 +2,7 @@ const {
   getAllUsers,
   getUserProfile,
   updateUserProfile,
+  getUsersCount,
 } = require('../controllers/userController');
 const validateObjectId = require('../middlewares/validateObjectId');
 const {
@@ -19,5 +20,8 @@ router
   .route('/profile/:id')
   .get(validateObjectId, getUserProfile)
   .put(validateObjectId, verifyTokenAndOnlyUser, updateUserProfile);
+
+//  /api/users/count
+router.route('/count').get(verifyTokenAndAdmin, getUsersCount);
 
 module.exports = router;

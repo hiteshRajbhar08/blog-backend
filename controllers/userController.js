@@ -67,8 +67,20 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   res.status(200).json(updatedUser);
 });
 
+/**-----------------------------------------------
+ * @desc    Get Users Count
+ * @route   /api/users/count
+ * @method  GET
+ * @access  private (only admin)
+ ------------------------------------------------*/
+const getUsersCount = asyncHandler(async (req, res) => {
+  const count = await User.count();
+  res.status(200).json(count);
+});
+
 module.exports = {
   getAllUsers,
   getUserProfile,
   updateUserProfile,
+  getUsersCount,
 };
