@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 
 // routes
 const authRoutes = require('./routes/authRoute');
+const usersRoutes = require('./routes/userRoute');
 
 // connect database
 connectDB();
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // routes middleware
 app.use('/api/auth', authRoutes);
+app.use('/api/users', usersRoutes);
 
 // listen to server
 const PORT = process.env.PORT || 8000;
