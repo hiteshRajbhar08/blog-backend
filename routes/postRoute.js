@@ -1,4 +1,4 @@
-const { createPost } = require('../controllers/postController');
+const { createPost, getAllPosts } = require('../controllers/postController');
 const photoUpload = require('../middlewares/photoUpload');
 const validateObjectId = require('../middlewares/validateObjectId');
 const {
@@ -10,6 +10,9 @@ const {
 const router = require('express').Router();
 
 // /api/posts
-router.route('/').post(verifyToken, photoUpload.single('image'), createPost);
+router
+  .route('/')
+  .post(verifyToken, photoUpload.single('image'), createPost)
+  .get(getAllPosts);
 
 module.exports = router;
