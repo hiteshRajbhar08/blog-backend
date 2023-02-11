@@ -3,6 +3,7 @@ const {
   createComment,
   getAllComments,
   deleteComment,
+  updateComment,
 } = require('../controllers/commentController');
 const {
   verifyTokenAndAdmin,
@@ -17,6 +18,9 @@ router
   .get(verifyTokenAndAdmin, getAllComments);
 
 // /api/comments/:id
-router.route('/:id').delete(validateObjectId, verifyToken, deleteComment);
+router
+  .route('/:id')
+  .delete(validateObjectId, verifyToken, deleteComment)
+  .put(validateObjectId, verifyToken, updateComment);
 
 module.exports = router;

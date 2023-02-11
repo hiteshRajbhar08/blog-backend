@@ -68,8 +68,49 @@ const deleteComment = asyncHandler(async (req, res) => {
   }
 });
 
+/**-----------------------------------------------
+ * @desc    Update Comment
+ * @route   /api/comments/:id
+ * @method  PUT
+ * @access  private (only owner of the comment)
+ ------------------------------------------------*/
+const updateComment = asyncHandler(async (req, res) => {
+  const { error } = validateUpdateComment(req.body);
+  if (error) {
+    return res.status(400).json({
+      message: error.details[0].message,
+    });
+  }
+
+  const comment = await Comment.findById(req.params.id);
+  if (!comment) {
+    return res.status(404).json({
+      message: 'comment not found',
+    });
+  }
+
+  if (req.user.id !== comment.user.toString()) {
+    return res.status(403).json({
+      message: 'access denied, only user himself can edit his comment',
+    });
+  }
+
+  const updatedComment = await Comment.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: {
+        text: req.body.text,
+      },
+    },
+    { new: true }
+  );
+
+  res.status(200).json(updatedComment);
+});
+
 module.exports = {
   createComment,
   getAllComments,
   deleteComment,
+  updateComment,
 };
