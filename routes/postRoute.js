@@ -3,14 +3,13 @@ const {
   getAllPosts,
   getSinglePost,
   getPostCount,
+  deletePost,
 } = require('../controllers/postController');
 const photoUpload = require('../middlewares/photoUpload');
 const validateObjectId = require('../middlewares/validateObjectId');
 const {
-  verifyTokenAndAdmin,
   verifyTokenAndOnlyUser,
   verifyToken,
-  verifyTokenAndAuthorization,
 } = require('../middlewares/verifyToken');
 const router = require('express').Router();
 
@@ -24,6 +23,9 @@ router
 router.route('/count').get(getPostCount);
 
 // /api/posts/:id
-router.route('/:id').get(validateObjectId, getSinglePost);
+router
+  .route('/:id')
+  .get(validateObjectId, getSinglePost)
+  .delete(validateObjectId, verifyToken, deletePost);
 
 module.exports = router;
