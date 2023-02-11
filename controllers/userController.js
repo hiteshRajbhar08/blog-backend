@@ -3,7 +3,10 @@ const { User, validateUpdateUser } = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const path = require('path');
 const fs = require('fs');
-const { cloudinaryUploadImage } = require('../utils/cloudinary');
+const {
+  cloudinaryUploadImage,
+  cloudinaryRemoveImage,
+} = require('../utils/cloudinary');
 
 /**-----------------------------------------------
  * @desc    Get All Users Profile
@@ -123,10 +126,36 @@ const profilePhotoUpload = asyncHandler(async (req, res) => {
   fs.unlinkSync(imagePath);
 });
 
+/**-----------------------------------------------
+ * @desc    Delete User Profile (Account)
+ * @route   /api/users/profile/:id
+ * @method  DELETE
+ * @access  private (only admin or user himself)
+ ------------------------------------------------*/
+const deleteUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    return res.status(404).json({
+      message: 'user not found',
+    });
+  }
+
+  // delete profile photo
+  await cloudinaryRemoveImage(user.profilePhoto.publicId);
+
+  // delete the user himself
+  await User.findByIdAndDelete(req.params.id);
+
+  res.status(200).json({
+    message: 'your profile has been deleted',
+  });
+});
+
 module.exports = {
   getAllUsers,
   getUserProfile,
   updateUserProfile,
   getUsersCount,
   profilePhotoUpload,
+  deleteUserProfile,
 };

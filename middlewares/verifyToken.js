@@ -49,8 +49,22 @@ const verifyTokenAndOnlyUser = (req, res, next) => {
   });
 };
 
+//  verify token and authorization
+const verifyTokenAndAuthorization = (req, res, next) => {
+  verifyToken(req, res, () => {
+    if (req.user.id === req.params.id || req.user.isAdmin) {
+      next();
+    } else {
+      return res.status(403).json({
+        message: 'not allowed,only logged in user or admin can access',
+      });
+    }
+  });
+};
+
 module.exports = {
   verifyToken,
   verifyTokenAndAdmin,
   verifyTokenAndOnlyUser,
+  verifyTokenAndAuthorization,
 };
