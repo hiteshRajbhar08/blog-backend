@@ -5,6 +5,7 @@ const {
   getPostCount,
   deletePost,
   updatePost,
+  updatePostImage,
 } = require('../controllers/postController');
 const photoUpload = require('../middlewares/photoUpload');
 const validateObjectId = require('../middlewares/validateObjectId');
@@ -29,5 +30,15 @@ router
   .get(validateObjectId, getSinglePost)
   .delete(validateObjectId, verifyToken, deletePost)
   .put(validateObjectId, verifyToken, updatePost);
+
+// /api/posts/update-image/:id
+router
+  .route('/update-image/:id')
+  .put(
+    validateObjectId,
+    verifyToken,
+    photoUpload.single('image'),
+    updatePostImage
+  );
 
 module.exports = router;
