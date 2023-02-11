@@ -1,3 +1,4 @@
+const router = require('express').Router();
 const {
   getAllUsers,
   getUserProfile,
@@ -14,7 +15,6 @@ const {
   verifyToken,
   verifyTokenAndAuthorization,
 } = require('../middlewares/verifyToken');
-const router = require('express').Router();
 
 //  /api/users/profile
 router.route('/profile').get(verifyTokenAndAdmin, getAllUsers);

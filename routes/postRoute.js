@@ -1,3 +1,4 @@
+const router = require('express').Router();
 const {
   createPost,
   getAllPosts,
@@ -10,11 +11,7 @@ const {
 } = require('../controllers/postController');
 const photoUpload = require('../middlewares/photoUpload');
 const validateObjectId = require('../middlewares/validateObjectId');
-const {
-  verifyTokenAndOnlyUser,
-  verifyToken,
-} = require('../middlewares/verifyToken');
-const router = require('express').Router();
+const { verifyToken } = require('../middlewares/verifyToken');
 
 // /api/posts
 router

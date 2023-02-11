@@ -7,6 +7,7 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoute');
 const usersRoutes = require('./routes/userRoute');
 const postsRoutes = require('./routes/postRoute');
+const commentRoutes = require('./routes/commentRoute');
 
 // connect database
 connectDB();
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/posts', postsRoutes);
+app.use('/api/comments', commentRoutes);
 
 // listen to server
 const PORT = process.env.PORT || 8000;
