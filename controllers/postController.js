@@ -105,8 +105,20 @@ const getSinglePost = asyncHandler(async (req, res) => {
   res.status(200).json(post);
 });
 
+/**-----------------------------------------------
+ * @desc    Get Posts Count
+ * @route   /api/posts/count
+ * @method  GET
+ * @access  public
+ ------------------------------------------------*/
+const getPostCount = asyncHandler(async (req, res) => {
+  const count = await Post.count();
+  res.status(200).json(count);
+});
+
 module.exports = {
   createPost,
   getAllPosts,
   getSinglePost,
+  getPostCount,
 };
