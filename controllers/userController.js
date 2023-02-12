@@ -6,7 +6,10 @@ const fs = require('fs');
 const {
   cloudinaryUploadImage,
   cloudinaryRemoveImage,
+  cloudinaryRemoveMultipleImage,
 } = require('../utils/cloudinary');
+const { Post } = require('../models/postModel');
+const { Comment } = require('../models/commentModel');
 
 /**-----------------------------------------------
  * @desc    Get All Users Profile
@@ -142,8 +145,25 @@ const deleteUserProfile = asyncHandler(async (req, res) => {
     });
   }
 
+  // Get all posts from DB
+  const posts = await Post.find({ user: user._id });
+
+  //  Get the public ids from the posts
+  const publicIds = posts?.map((post) => post.image.publicId);
+
+  //  Delete all posts image from cloudinary that belong to this user
+  if (publicIds?.length > 0) {
+    await cloudinaryRemoveMultipleImage(publicIds);
+  }
+
   // delete profile photo
-  await cloudinaryRemoveImage(user.profilePhoto.publicId);
+  if (user.profilePhoto.publicId !== null) {
+    await cloudinaryRemoveImage(user.profilePhoto.publicId);
+  }
+
+  //  Delete user posts & comments
+  await Post.deleteMany({ user: user._id });
+  await Comment.deleteMany({ user: user._id });
 
   // delete the user himself
   await User.findByIdAndDelete(req.params.id);

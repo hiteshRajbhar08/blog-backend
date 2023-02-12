@@ -10,6 +10,7 @@ const {
   cloudinaryUploadImage,
   cloudinaryRemoveImage,
 } = require('../utils/cloudinary');
+const { Comment } = require('../models/commentModel');
 
 /**-----------------------------------------------
  * @desc    Create New Post
@@ -133,6 +134,9 @@ const deletePost = asyncHandler(async (req, res) => {
   if (req.user.isAdmin || req.user.id === post.user.toString()) {
     await Post.findByIdAndDelete(req.params.id);
     await cloudinaryRemoveImage(post.image.publicId);
+
+    // delete all comments belong to this post
+    await Comment.deleteMany({ postId: post._id });
 
     res.status(200).json({
       message: 'post has been deleted successfully',
