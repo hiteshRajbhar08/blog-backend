@@ -8,6 +8,7 @@ const authRoutes = require('./routes/authRoute');
 const usersRoutes = require('./routes/userRoute');
 const postsRoutes = require('./routes/postRoute');
 const commentRoutes = require('./routes/commentRoute');
+const categoryRoutes = require('./routes/categoryRoute');
 
 // connect database
 connectDB();
@@ -24,6 +25,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/posts', postsRoutes);
 app.use('/api/comments', commentRoutes);
+app.use('/api/categories', categoryRoutes);
 
 // listen to server
 const PORT = process.env.PORT || 8000;
