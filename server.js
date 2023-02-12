@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config();
 require('colors');
 const connectDB = require('./config/db');
+const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
 
 // routes
 const authRoutes = require('./routes/authRoute');
@@ -26,6 +27,10 @@ app.use('/api/users', usersRoutes);
 app.use('/api/posts', postsRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/categories', categoryRoutes);
+
+// error middlewares
+app.use(notFound);
+app.use(errorHandler);
 
 // listen to server
 const PORT = process.env.PORT || 8000;
