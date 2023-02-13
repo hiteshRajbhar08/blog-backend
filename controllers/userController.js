@@ -119,7 +119,7 @@ const profilePhotoUpload = asyncHandler(async (req, res) => {
 
   await user.save();
 
-  res.status(400).json({
+  res.status(200).json({
     message: 'Your profile photo uploaded successfully ',
     profilePhoto: {
       url: result.secure_url,
