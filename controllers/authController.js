@@ -36,10 +36,15 @@ const registerUser = asyncHandler(async (req, res) => {
     password: hashedPassword,
   });
 
+  const token = user.generateAuthToken();
   await user.save();
 
   res.status(201).json({
-    message: 'User Register Successfully, Please log in',
+    _id: user._id,
+    username: user.username,
+    isAdmin: user.isAdmin,
+    profilePhoto: user.profilePhoto,
+    token,
   });
 });
 
