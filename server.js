@@ -1,6 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 require('colors');
+const cors = require('cors');
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
 
@@ -20,6 +21,7 @@ const app = express();
 //  middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 // routes middleware
 app.use('/api/auth', authRoutes);
